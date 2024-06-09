@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: 'RETROTECH';
+    src: url(/fonts/RETROTECH.ttf) format('opentype');
+  }
+}
+
+@layer utilities {
+  .outlined {
+    @apply drop-shadow-[2px_2px_0.4px_rgba(0,0,0,0.8)];
+  }
+}
