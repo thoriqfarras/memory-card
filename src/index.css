@@ -10,6 +10,9 @@
 }
 
 @layer utilities {
+  body {
+    @apply bg-green-900 overflow-x-hidden;
+  }
   .outlined {
     @apply drop-shadow-[2px_2px_0.4px_rgba(0,0,0,0.8)];
   }
