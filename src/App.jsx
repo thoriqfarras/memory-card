@@ -6,6 +6,7 @@ function App() {
   const [score, setScore] = useState(0);
   const [bestScore, setBestScore] = useState(0);
   const [pokemons, setPokemons] = useState([]);
+  const [clicked, setClicked] = useState([]);
 
   useEffect(() => {
     fetchPokemons().then((pokemons) => {
@@ -22,14 +23,26 @@ function App() {
       </div>
       <CardGrid
         pokemons={pokemons}
-        setScore={setScore}
         setPokemons={setPokemons}
+        clicked={clicked}
+        setClicked={setClicked}
+        score={score}
+        setScore={setScore}
+        setBestScore={setBestScore}
       />
     </div>
   );
 }
 
-function CardGrid({ pokemons, setScore, setPokemons }) {
+function CardGrid({
+  pokemons,
+  setPokemons,
+  clicked,
+  setClicked,
+  score,
+  setScore,
+  setBestScore,
+}) {
   const [cards, setCards] = useState([]);
 
   useEffect(() => {
@@ -39,9 +52,13 @@ function CardGrid({ pokemons, setScore, setPokemons }) {
           key={pokemon.name}
           pokemonName={pokemon.name}
           pokemonSprite={pokemon.img}
-          setScore={setScore}
           pokemons={pokemons}
           setPokemons={setPokemons}
+          clicked={clicked}
+          setClicked={setClicked}
+          score={score}
+          setScore={setScore}
+          setBestScore={setBestScore}
         />
       ))
     );
@@ -55,7 +72,17 @@ function CardGrid({ pokemons, setScore, setPokemons }) {
   );
 }
 
-function Card({ pokemonName, pokemonSprite, setScore, setPokemons, pokemons }) {
+function Card({
+  pokemonName,
+  pokemonSprite,
+  pokemons,
+  setPokemons,
+  clicked,
+  setClicked,
+  score,
+  setScore,
+  setBestScore,
+}) {
   function shuffle(array) {
     array = [...array];
     let m = array.length;
@@ -73,11 +100,22 @@ function Card({ pokemonName, pokemonSprite, setScore, setPokemons, pokemons }) {
     return array;
   }
 
+  function handleCardClick() {
+    if (!clicked.includes(pokemonName)) {
+      setScore((score) => score + 1);
+      setClicked((clicked) => [...clicked, pokemonName]);
+      setBestScore((bestScore) => (score >= bestScore ? score + 1 : bestScore));
+    } else {
+      setScore(0);
+      setClicked([]);
+    }
+  }
+
   return (
     <div
       className="flex flex-col gap-2 hover:cursor-pointer"
       onClick={() => {
-        setScore((score) => score + 1);
+        handleCardClick();
         const shuffled = shuffle(pokemons);
         setPokemons(shuffled);
       }}
